@@ -2,7 +2,7 @@ local PlayerService = game:GetService("Players")
 local ServerScriptService = game:GetService("ServerScriptService")
 
 local FDW = require(ServerScriptService:WaitForChild("FourlDSWrapper"))
-local CashDataStore = FDW.CreateDataStore("NewCash")
+local CashDataStore = FDW.CreateDataStore("NewCash", false)
 
 function onPlayerAdded(plr : Player)
 	local leaderstats = Instance.new("Folder")
