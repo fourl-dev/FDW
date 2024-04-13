@@ -31,4 +31,11 @@ local Unpacked = FDW.Unpack(FDW)
 local Cash = Unpacked:GetItem("Cash")
 ```
 
+Additionally you can normally use SetData on a FDW if you do not want to use SaveObjects/buffers.
+
+```
+local CDS = FDW.CreateDataStore("NewCash")
+CDS:SetData(k, v)
+```
+
 Any feedback on improving this would be appreciated.
