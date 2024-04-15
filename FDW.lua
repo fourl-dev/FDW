@@ -15,7 +15,8 @@ local UPD = {}
 UPD.__index = UPD
 
 export type FDW = {
-	Store: any
+	Store: any,
+	Ordered: boolean
 }
 
 export type SaveObject = {
@@ -24,7 +25,7 @@ export type SaveObject = {
 
 export type UnpackBuffer = {}
 
-function GetDataStore(Name, ordered)
+function GetDataStore(Name, ordered : boolean)
 	local Data
 
 	if not table.find(Datas, Name) then
@@ -150,10 +151,11 @@ end
 
 module.CreateDataStore = function(Name, Ordered) : FDW
 	if not findTable(Name) then
-		local DS = GetDataStore(Name)
+		local DS = GetDataStore(Name, Ordered)
 
 		local newTable : any = {
-			Store = DS
+			Store = DS,
+			Ordered = Ordered
 		}
 
 		setmetatable(newTable, Wrapper)
@@ -197,6 +199,16 @@ end
 
 function Wrapper:GetData(key)
 	return GetData(self.Store, key)
+end
+
+function Wrapper:SortList(ascending, size)
+	if self.Ordered then
+		local Store : OrderedDataStore = self.Store
+		
+		return Store:GetSortedAsync(ascending, 100)
+	end
+	
+	return nil
 end
 
 function Default:AddItem(n, s)
